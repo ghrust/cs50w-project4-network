@@ -1,5 +1,6 @@
 __pycache__/
 env/
 staticfiles/
+htmlcov/
 db.sqlite3
 .coverage
