@@ -2,5 +2,6 @@ __pycache__/
 env/
 staticfiles/
 htmlcov/
+.vscode/
 db.sqlite3
 .coverage
