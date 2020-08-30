@@ -8,6 +8,8 @@
     </form>
 
     {% for post in posts %}
-        {{ post }}
+        {{ post.author }}
+        {{ post.content }}
+        {{ post.date }}
     {% endfor %}
 {% endblock %}

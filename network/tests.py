@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import User
+from .models import User, Post
 from .forms import NewPostForm
 
 
@@ -128,3 +128,20 @@ class NetworkTestCase(TestCase):
         form = NewPostForm()
 
         self.assertContains(response, form)
+
+    def test_add_new_post(self):
+        """Test new post view. Post request to server. Save to database."""
+
+        c = Client()
+        c.login(username='user1', password='pass')
+
+        response = c.post(
+            '/new_post',
+            {'post': 'test'}
+        )
+
+        c.logout()
+
+        posts = Post.objects.all()
+
+        self.assertEqual(posts.count(), 1)

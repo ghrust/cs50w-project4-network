@@ -101,6 +101,8 @@ def new_post(request):
         p = Post(content=post, author=request.user)
         p.save()
 
+        logging.info(f'User {request.user} adds post.')
+
         return redirect('index')
 
     return redirect('index')
