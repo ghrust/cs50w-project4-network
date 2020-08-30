@@ -129,6 +129,13 @@ class NetworkTestCase(TestCase):
 
         self.assertContains(response, form)
 
+    def test_get_request_new_post(self):
+        """Test get request to new post view."""
+
+        response = Client().get('/new_post')
+
+        self.assertRedirects(response, '/')
+
     def test_add_new_post(self):
         """Test new post view. Post request to server. Save to database."""
 
@@ -144,4 +151,5 @@ class NetworkTestCase(TestCase):
 
         posts = Post.objects.all()
 
+        self.assertRedirects(response, '/')
         self.assertEqual(posts.count(), 1)

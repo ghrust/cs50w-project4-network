@@ -22,8 +22,7 @@ def index(request):
 
     form = NewPostForm()
 
-    # TODO: get posts from database
-    # send to index page
+    # get posts from database, send to index page.
     posts = Post.objects.all()
 
     context = {'form': form, 'posts': posts}
