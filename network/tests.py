@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from .models import User
+from .forms import NewPostForm
 
 
 class NetworkTestCase(TestCase):
@@ -118,3 +119,12 @@ class NetworkTestCase(TestCase):
             response.context["message"],
             "Username already taken."
         )
+
+    def test_new_post_form_rendered(self):
+        """Test create post."""
+
+        response = Client().get('/')
+
+        form = NewPostForm()
+
+        self.assertContains(response, form)
