@@ -1,5 +1,15 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+    <form action="{% url 'new_post' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Post">
+    </form>
+
+    {% for post in posts %}
+        {{ post.author }}
+        {{ post.content }}
+        {{ post.date }}
+    {% endfor %}
 {% endblock %}
