@@ -96,12 +96,10 @@ def new_post(request):
     if request.method == 'POST':
         post = request.POST['post']
 
-        # TODO: save to database
+        # Save post to database.
         p = Post(content=post, author=request.user)
         p.save()
 
         logging.info(f'User {request.user} adds post.')
-
-        return redirect('index')
 
     return redirect('index')
