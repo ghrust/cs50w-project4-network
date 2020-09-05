@@ -2,9 +2,14 @@
 
 {% block body %}
     <form action="{% url 'new_post' %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Post">
+        <div class="form-group p-3 border">
+            {% csrf_token %}
+            {% for field in form %}
+                <b><label for="{{ field.auto_id }}">{{ field.label }}</label></b>
+                {{ field }}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Post</button>
+        </div>
     </form>
 
     {% for post in posts %}

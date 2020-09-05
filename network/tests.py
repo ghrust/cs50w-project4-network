@@ -125,9 +125,7 @@ class NetworkTestCase(TestCase):
 
         response = Client().get('/')
 
-        form = NewPostForm()
-
-        self.assertContains(response, form)
+        self.assertIsInstance(response.context['form'], NewPostForm)
 
     def test_get_request_new_post(self):
         """Test get request to new post view."""
