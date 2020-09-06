@@ -14,6 +14,11 @@ class NetworkTestCase(TestCase):
             email='user1@testmail.com'
         )
 
+        post = Post.objects.create(
+            content='test',
+            author=user,
+        )
+
     def test_index_page(self):
         """Test index page."""
 
@@ -21,6 +26,7 @@ class NetworkTestCase(TestCase):
         response = c.get('/')
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['posts'].count(), 1)
 
     def test_get_request_login_page(self):
         """Test login page."""
@@ -150,4 +156,4 @@ class NetworkTestCase(TestCase):
         posts = Post.objects.all()
 
         self.assertRedirects(response, '/')
-        self.assertEqual(posts.count(), 1)
+        self.assertEqual(posts.count(), 2)
