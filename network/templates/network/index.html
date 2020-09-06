@@ -1,16 +1,18 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <form action="{% url 'new_post' %}" method="post">
-        <div class="form-group p-3 border">
-            {% csrf_token %}
-            {% for field in form %}
-                <b><label for="{{ field.auto_id }}">{{ field.label }}</label></b>
-                {{ field }}
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Post</button>
-        </div>
-    </form>
+    {% if request.user.is_authenticated %}
+        <form action="{% url 'new_post' %}" method="post">
+            <div class="form-group p-3 border">
+                {% csrf_token %}
+                {% for field in form %}
+                    <b><label for="{{ field.auto_id }}">{{ field.label }}</label></b>
+                    {{ field }}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Post</button>
+            </div>
+        </form>
+    {% endif %}
 
     {% for post in posts %}
         <div class="card mb-3">
