@@ -13,8 +13,12 @@
     </form>
 
     {% for post in posts %}
-        {{ post.author }}
-        {{ post.content }}
-        {{ post.date }}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.author }}</h5>
+                <div class="card-text">{{ post.content }}</div>
+                <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}
