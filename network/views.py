@@ -108,6 +108,12 @@ def new_post(request):
 def profile_page(request, username):
     """User profile page."""
 
-    context = {'username': username}
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(author=user)
+
+    context = {
+        'username': username,
+        'posts': posts,
+    }
 
     return render(request, "network/profile.html", context)
