@@ -103,3 +103,11 @@ def new_post(request):
         logging.info(f'User {request.user} adds post.')
 
     return redirect('index')
+
+
+def profile_page(request, username):
+    """User profile page."""
+
+    context = {'username': username}
+
+    return render(request, "network/profile.html", context)
