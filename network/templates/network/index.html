@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    {% if request.user.is_authenticated %}
+    {% if user.is_authenticated %}
         <form action="{% url 'new_post' %}" method="post">
             <div class="form-group p-3 border">
                 {% csrf_token %}
@@ -17,7 +17,7 @@
     {% for post in posts %}
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">{{ post.author }}</h5>
+                <h5 class="card-title"><a href="{% url 'profile_page' username=post.author %}">{{ post.author }}</a></h5>
                 <div class="card-text">{{ post.content }}</div>
                 <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
                 <i class="fas fa-heart text-muted">0</i>

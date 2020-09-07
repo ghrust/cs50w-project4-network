@@ -157,3 +157,17 @@ class NetworkTestCase(TestCase):
 
         self.assertRedirects(response, '/')
         self.assertEqual(posts.count(), 2)
+
+    def test_profile_page(self):
+        """Test user profile page."""
+
+        c = Client()
+        c.login(username='user1', password='pass')
+
+        posts = Post.objects.filter(author=User.objects.get(username='user1'))
+
+        response = c.get('/profile/user1')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['username'], 'user1')
+        self.assertEqual(response.context['posts'].count(), posts.count())
