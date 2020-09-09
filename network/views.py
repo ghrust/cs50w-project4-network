@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, Post
+from .models import User, Post, UserFollowing
 
 from .forms import NewPostForm
 
@@ -110,10 +110,29 @@ def profile_page(request, username):
 
     user = User.objects.get(username=username)
     posts = Post.objects.filter(author=user)
+    followings = user.following.all()
+    followers = user.followers.all()
 
     context = {
         'username': username,
         'posts': posts,
+        'followings': followings,
+        'followers': followers,
     }
 
     return render(request, "network/profile.html", context)
+
+
+def following_view(request, following_username):
+    """Follow/unfollow."""
+
+    following_user = User.objects.get(username=following_username)
+
+    following = UserFollowing.objects.create(
+        follower=request.user,
+        following=following_user
+    )
+
+    print(following)
+
+    return redirect('index')

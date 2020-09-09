@@ -3,11 +3,11 @@
 {% block body %}
     <h3>{{ username }}</h3>
     {% if user.is_authenticated and user.username != username %}
-        <a href="#">Follow</a>
+        <a href="{% url 'following_view' following_username=username %}">Follow</a>
     {% endif %}
 
-    <h5>Folowers 0</h5>
-    <h5>Subscriptions 0</h5>
+    <h5>Folowers {{ followers.count }}</h5>
+    <h5>Subscriptions {{ followings.count }}</h5>
 
     <h4>Posts</h3>
     {% for post in posts %}
