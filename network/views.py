@@ -113,11 +113,18 @@ def profile_page(request, username):
     followings = user.following.all()
     followers = user.followers.all()
 
+    # Сheck if the user is a follower of the user whose profile was loaded.
+    is_follower = False
+    for item in followers:
+        if request.user.username == item.follower.username:
+            is_follower = True
+
     context = {
         'username': username,
         'posts': posts,
         'followings': followings,
         'followers': followers,
+        'is_follower': is_follower,
     }
 
     return render(request, "network/profile.html", context)
@@ -128,11 +135,9 @@ def following_view(request, following_username):
 
     following_user = User.objects.get(username=following_username)
 
-    following = UserFollowing.objects.create(
+    UserFollowing.objects.create(
         follower=request.user,
         following=following_user
     )
-
-    print(following)
 
     return redirect('index')
