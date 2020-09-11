@@ -4,7 +4,13 @@ from django.conf import settings
 
 
 class User(AbstractUser):
-    pass
+    def follow(self, target_user):
+        """Follow to another user. Add entry to UserFollowing table."""
+        UserFollowing.objects.create(follower=self, following=target_user)
+
+    def unfollow(self, target_user):
+        """Unfollow from another user. Delete entry from UserFollowing table."""
+        UserFollowing.objects.get(follower=self, following=target_user).delete()
 
 
 class Post(models.Model):
@@ -23,6 +29,7 @@ class Post(models.Model):
 
 
 class UserFollowing(models.Model):
+    """Model for following user to another user."""
 
     follower = models.ForeignKey(
         User,

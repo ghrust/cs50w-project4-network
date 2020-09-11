@@ -5,9 +5,9 @@
 
     {% if user.is_authenticated and user.username != username %}
         {% if is_follower %}
-            <a href="#">Unfollow</a>
+            <a href="{% url 'unfollow_view' target_name=username %}">Unfollow</a>
         {% else %}
-            <a href="#">Follow</a>
+            <a href="{% url 'follow_view' target_name=username %}">Follow</a>
         {% endif %}
     {% endif %}
 

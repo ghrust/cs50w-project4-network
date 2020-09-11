@@ -130,14 +130,21 @@ def profile_page(request, username):
     return render(request, "network/profile.html", context)
 
 
-def following_view(request, following_username):
-    """Follow/unfollow."""
+def follow_view(request, target_name):
+    """Follow view. User may follow to another user."""
 
-    following_user = User.objects.get(username=following_username)
+    target_user = User.objects.get(username=target_name)
 
-    UserFollowing.objects.create(
-        follower=request.user,
-        following=following_user
-    )
+    request.user.follow(target_user)
+
+    return redirect('index')
+
+
+def unfollow_view(request, target_name):
+    """Unfollow from another user."""
+
+    target_user = User.objects.get(username=target_name)
+
+    request.user.unfollow(target_user)
 
     return redirect('index')
