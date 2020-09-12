@@ -203,3 +203,14 @@ class NetworkTestCase(TestCase):
         response = c.get('/profile/user2')
 
         self.assertEqual(response.context['followers'].count(), 0)
+
+    def test_following_posts_page(self):
+        """Test following posts page."""
+
+        c = Client()
+        c.login(username='user2', password='pass')
+        c.get('/follow/user1')
+
+        response = c.get('/following_posts')
+
+        self.assertEqual(response.context['posts'].count(), 1)
