@@ -2,12 +2,17 @@
 
 {% block body %}
     <h3>{{ username }}</h3>
+
     {% if user.is_authenticated and user.username != username %}
-        <a href="#">Follow</a>
+        {% if is_follower %}
+            <a href="{% url 'unfollow_view' target_name=username %}">Unfollow</a>
+        {% else %}
+            <a href="{% url 'follow_view' target_name=username %}">Follow</a>
+        {% endif %}
     {% endif %}
 
-    <h5>Folowers 0</h5>
-    <h5>Subscriptions 0</h5>
+    <h5>Folowers {{ followers.count }}</h5>
+    <h5>Subscriptions {{ followings.count }}</h5>
 
     <h4>Posts</h3>
     {% for post in posts %}

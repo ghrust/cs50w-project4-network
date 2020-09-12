@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import User, Post
+from .models import User, Post, UserFollowing
 from .forms import NewPostForm
 
 
@@ -8,15 +8,21 @@ class NetworkTestCase(TestCase):
 
     def setUp(self):
         # Create test user.
-        user = User.objects.create_user(
+        user1 = User.objects.create_user(
             username='user1',
             password='pass',
-            email='user1@testmail.com'
+            email='user1@testmail.com',
         )
 
-        post = Post.objects.create(
+        User.objects.create_user(
+            username='user2',
+            password='pass',
+            email='user2@testmail.com',
+        )
+
+        Post.objects.create(
             content='test',
-            author=user,
+            author=user1,
         )
 
     def test_index_page(self):
@@ -53,7 +59,7 @@ class NetworkTestCase(TestCase):
 
         response = Client().post(
             '/login',
-            {'username': 'user2', 'password': 'pass'}
+            {'username': 'user3', 'password': 'pass'}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -78,18 +84,18 @@ class NetworkTestCase(TestCase):
         response = Client().post(
             '/register',
             {
-                'username': 'user2',
+                'username': 'user3',
                 'password': 'pass',
                 'confirmation': 'pass',
-                'email': 'user2@testmail.com'
+                'email': 'user3@testmail.com'
             }
         )
 
-        user = User.objects.get(username='user2')
+        user = User.objects.get(username='user3')
 
         self.assertRedirects(response, '/')
-        self.assertEqual(user.username, 'user2')
-        self.assertEqual(user.email, 'user2@testmail.com')
+        self.assertEqual(user.username, 'user3')
+        self.assertEqual(user.email, 'user3@testmail.com')
 
     def test_invalid_registration_with_wrong_password_confirmation(self):
         """Test invalid registration with wrong password confirmation."""
@@ -171,3 +177,29 @@ class NetworkTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['username'], 'user1')
         self.assertEqual(response.context['posts'].count(), posts.count())
+
+    def test_follow(self):
+        """Test user follow another user."""
+
+        c = Client()
+        c.login(username='user1', password='pass')
+        c.get('/follow/user2')
+        response = c.get('/profile/user2')
+
+        self.assertEqual(response.context['followers'].count(), 1)
+
+        UserFollowing.objects.get(follower=1, following=2).delete()
+
+    def test_unfollow(self):
+        """Test unfollow."""
+
+        user1 = User.objects.get(pk=1)
+        user2 = User.objects.get(pk=2)
+        UserFollowing.objects.create(follower=user1, following=user2)
+
+        c = Client()
+        c.login(username='user1', password='pass')
+        c.get('/unfollow/user2')
+        response = c.get('/profile/user2')
+
+        self.assertEqual(response.context['followers'].count(), 0)

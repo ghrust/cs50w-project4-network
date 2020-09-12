@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, Post
+from .models import User, Post, UserFollowing
 
 from .forms import NewPostForm
 
@@ -110,10 +110,41 @@ def profile_page(request, username):
 
     user = User.objects.get(username=username)
     posts = Post.objects.filter(author=user)
+    followings = user.following.all()
+    followers = user.followers.all()
+
+    # Сheck if the user is a follower of the user whose profile was loaded.
+    is_follower = False
+    for item in followers:
+        if request.user.username == item.follower.username:
+            is_follower = True
 
     context = {
         'username': username,
         'posts': posts,
+        'followings': followings,
+        'followers': followers,
+        'is_follower': is_follower,
     }
 
     return render(request, "network/profile.html", context)
+
+
+def follow_view(request, target_name):
+    """Follow view. User may follow to another user."""
+
+    target_user = User.objects.get(username=target_name)
+
+    request.user.follow(target_user)
+
+    return redirect('index')
+
+
+def unfollow_view(request, target_name):
+    """Unfollow from another user."""
+
+    target_user = User.objects.get(username=target_name)
+
+    request.user.unfollow(target_user)
+
+    return redirect('index')
