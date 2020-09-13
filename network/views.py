@@ -5,8 +5,9 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from .services import get_following_posts
 
-from .models import User, Post, UserFollowing
+from .models import User, Post
 
 from .forms import NewPostForm
 
@@ -146,5 +147,19 @@ def unfollow_view(request, target_name):
     target_user = User.objects.get(username=target_name)
 
     request.user.unfollow(target_user)
+
+    return redirect('index')
+
+
+def following_posts_view(request):
+    """Page with posts of users that the current user is subscribed to."""
+
+    if request.user.is_authenticated:
+        f_posts = get_following_posts(request.user)
+
+        context = {
+            'f_posts': f_posts,
+        }
+        return render(request, 'network/following_posts.html', context)
 
     return redirect('index')
