@@ -154,9 +154,12 @@ def unfollow_view(request, target_name):
 def following_posts_view(request):
     """Page with posts of users that the current user is subscribed to."""
 
-    f_posts = get_following_posts(request.user)
+    if request.user.is_authenticated:
+        f_posts = get_following_posts(request.user)
 
-    context = {
-        'f_posts': f_posts,
-    }
-    return render(request, 'network/following_posts.html', context)
+        context = {
+            'f_posts': f_posts,
+        }
+        return render(request, 'network/following_posts.html', context)
+
+    return redirect('index')
