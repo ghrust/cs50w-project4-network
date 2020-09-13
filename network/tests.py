@@ -213,4 +213,4 @@ class NetworkTestCase(TestCase):
 
         response = c.get('/following_posts')
 
-        self.assertEqual(response.context['posts'].count(), 1)
+        self.assertEqual(response.context['f_posts'].count(), 1)
