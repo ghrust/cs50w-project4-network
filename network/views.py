@@ -2,14 +2,14 @@ import logging
 
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .services import get_following_posts
 
 from .models import User, Post
 
-from .forms import NewPostForm
+from .forms import NewPostForm, EditPostForm
 
 logging.basicConfig(
     level=logging.INFO,
@@ -163,3 +163,14 @@ def following_posts_view(request):
         return render(request, 'network/following_posts.html', context)
 
     return redirect('index')
+
+
+def edit_post_view(request):
+    print(request)
+    form = EditPostForm()
+
+    if request.method == 'POST':
+        # TODO: edit post in database
+        return redirect('index')
+
+    return HttpResponse(form)
