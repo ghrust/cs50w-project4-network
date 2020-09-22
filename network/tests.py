@@ -214,3 +214,11 @@ class NetworkTestCase(TestCase):
         response = c.get('/following_posts')
 
         self.assertEqual(response.context['f_posts'].count(), 1)
+
+    def test_following_posts_page_unauthorized_user(self):
+        """Test page with following posts if user is unauthorized."""
+
+        c = Client()
+        response = c.get('/following_posts')
+
+        self.assertRedirects(response, '/')
