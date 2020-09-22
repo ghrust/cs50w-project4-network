@@ -14,19 +14,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = document.createElement('form');
             form.onsubmit = function(event) {
                 event.preventDefault();
+
                 const request = new XMLHttpRequest();
                 request.open('POST', '/edit_post', true);
                 const csrftoken = getCookie('csrftoken');
                 request.setRequestHeader('X-CSRFToken', csrftoken);
 
                 request.onload = function() {
-                    console.log(this.response);
                     form.style.display = 'none';
                     cardBody.querySelector('.card-text').innerText = textarea.value;
                     cardBody.style.display = 'block';
                 };
 
-                request.send();
+                data = {
+                    post_id: cardBody.dataset.post_id,
+                    edited_text: textarea.value,
+                };
+
+                request.send(JSON.stringify(data));
             };
 
             const textarea = document.createElement('textarea');

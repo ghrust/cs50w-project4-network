@@ -13,16 +13,3 @@ class NewPostForm(forms.Form):
             }
         )
     )
-
-
-class EditPostForm(forms.Form):
-    post = forms.CharField(
-        required=True,
-        label='',
-        label_suffix='',
-        widget=forms.Textarea(
-            attrs={
-                'class': 'w-100',
-            }
-        )
-    )

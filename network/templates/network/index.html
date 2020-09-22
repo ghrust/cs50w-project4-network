@@ -16,7 +16,7 @@
 
     {% for post in posts %}
         <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body" data-post_id="{{ post.id }}">
                 <h5 class="card-title"><a href="{% url 'profile_page' username=post.author %}">{{ post.author }}</a></h5>
                 <div class="card-text">{{ post.content }}</div>
                 <h6 class="card-subtitle text-muted">{{ post.date }}</h6>

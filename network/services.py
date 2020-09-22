@@ -10,3 +10,15 @@ def get_following_posts(user):
     f_posts = Post.objects.filter(author__in=f_users)
 
     return f_posts
+
+
+def edit_post(post_id: int, text: str) -> None:
+    """Edit post in database.
+
+    Args:
+        post_id (int): Database post id;
+        text (string): New text
+    """
+    post: Post = Post.objects.get(pk=post_id)
+    post.content = text
+    post.save()
