@@ -222,3 +222,28 @@ class NetworkTestCase(TestCase):
         response = c.get('/following_posts')
 
         self.assertRedirects(response, '/')
+
+    def test_edit_post_view_get(self):
+        """Test edit post view. GET."""
+
+        c = Client()
+        response = c.get('/edit_post')
+
+        self.assertRedirects(response, '/')
+
+    def test_edit_post_view_post(self):
+        """Test edit post view. POST."""
+
+        c = Client()
+        c.login(username='user1', password='pass')
+
+        response = c.post(
+            '/edit_post',
+            {'post_id': '1', 'edited_text': 'test'},
+            content_type='application/json',
+        )
+
+        post = Post.objects.get(pk=1)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(post.content, 'test')
