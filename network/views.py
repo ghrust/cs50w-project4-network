@@ -1,11 +1,12 @@
 import logging
+import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .services import get_following_posts
+from .services import get_following_posts, edit_post
 
 from .models import User, Post
 
@@ -161,5 +162,25 @@ def following_posts_view(request):
             'f_posts': f_posts,
         }
         return render(request, 'network/following_posts.html', context)
+
+    return redirect('index')
+
+
+def edit_post_view(request):
+    """Edit post view.
+
+    Args:
+        request (HttpRequest)
+
+    Returns:
+        HttpResponse
+    """
+    if request.method == 'POST':
+        body: dict = json.loads(request.body)  # Convert from byte to dict
+        post_id: int = body['post_id']
+        edited_text: str = body['edited_text']
+
+        edit_post(post_id=post_id, text=edited_text)
+        return HttpResponse('Post edited.')
 
     return redirect('index')

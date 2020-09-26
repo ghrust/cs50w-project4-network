@@ -5,3 +5,4 @@ htmlcov/
 .vscode/
 db.sqlite3
 .coverage
+local_settings.py

@@ -8,8 +8,8 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
     </head>
-    <body>
 
+    <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'index' %}">Network</a>
 
@@ -47,4 +47,6 @@
             {% endblock %}
         </div>
     </body>
+
+    <script src="{% static 'network/network.js' %}"></script>
 </html>
