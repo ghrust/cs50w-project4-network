@@ -1,0 +1,31 @@
+    {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body" data-post_id="{{ post.id }}">
+                <h5 class="card-title"><a href="{% url 'profile_page' username=post.author %}">{{ post.author }}</a></h5>
+                <div class="card-text">{{ post.content }}</div>
+                <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
+                <i class="fas fa-heart text-muted">0</i>
+                {% if post.author == user %}
+                    <a class="edit-post-link" href="">Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {%if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>

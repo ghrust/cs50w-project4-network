@@ -6,11 +6,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .services import get_following_posts, edit_post
+from django.views.generic.list import ListView
+from django.core.paginator import Paginator
 
 from .models import User, Post
 
 from .forms import NewPostForm
+
+from .services import get_following_posts, edit_post
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,17 +23,18 @@ logging.basicConfig(
 )
 
 
-def index(request):
-    """Main page."""
+class AllPostsView(ListView):
+    """Index page view."""
 
-    form = NewPostForm()
+    template_name = 'network/index.html'
+    context_object_name = 'posts'
+    model = Post
+    paginate_by = 10
 
-    # get posts from database, send to index page.
-    posts = Post.objects.all()
-
-    context = {'form': form, 'posts': posts}
-
-    return render(request, "network/index.html", context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = NewPostForm()
+        return context
 
 
 def login_view(request):
@@ -112,6 +117,7 @@ def profile_page(request, username):
 
     user = User.objects.get(username=username)
     posts = Post.objects.filter(author=user)
+    page_obj = Paginator(posts, 10)
     followings = user.following.all()
     followers = user.followers.all()
 
@@ -127,6 +133,7 @@ def profile_page(request, username):
         'followings': followings,
         'followers': followers,
         'is_follower': is_follower,
+        'page_obj': page_obj,
     }
 
     return render(request, "network/profile.html", context)

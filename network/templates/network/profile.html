@@ -3,6 +3,7 @@
 {% block body %}
     <h3>{{ username }}</h3>
 
+    <!-- Follow/unfollow links. -->
     {% if user.is_authenticated and user.username != username %}
         {% if is_follower %}
             <a href="{% url 'unfollow_view' target_name=username %}">Unfollow</a>
@@ -14,14 +15,7 @@
     <h5>Folowers {{ followers.count }}</h5>
     <h5>Subscriptions {{ followings.count }}</h5>
 
-    <h4>Posts</h3>
-    {% for post in posts %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="card-text">{{ post.content }}</div>
-                <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
-                <i class="fas fa-heart text-muted">0</i>
-            </div>
-        </div>
-    {% endfor %}
+    <!-- Render posts. -->
+    {% include 'network/post_list.html' %}
+
 {% endblock %}
