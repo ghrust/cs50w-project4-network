@@ -13,7 +13,7 @@ from .models import User, Post
 
 from .forms import NewPostForm
 
-from .services import get_following_posts, edit_post
+from .services import get_following_posts, edit_post, create_like
 
 
 logging.basicConfig(
@@ -189,5 +189,25 @@ def edit_post_view(request):
 
         edit_post(post_id=post_id, text=edited_text)
         return HttpResponse('Post edited.')
+
+    return redirect('index')
+
+
+def like_view(request):
+    """Like view.
+
+    Args:
+        request (HttpRequest);
+        data (json): Data from ajax request. Author of like, and liked post.
+    """
+
+    if request.method == 'POST':
+        body = json.loads(request.body)  # Convert from byte to dict
+        like_author = body['like_author']
+        liked_post = body['liked_post']
+
+        like = create_like(like_author, liked_post)
+
+        return HttpResponse(json.dumps({'like': str(like)}))
 
     return redirect('index')

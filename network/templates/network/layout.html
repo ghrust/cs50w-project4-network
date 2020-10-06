@@ -17,7 +17,7 @@
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile_page' username=user.username %}"><strong>{{ user.username }}</strong></a>
+                        <a class="nav-link" href="{% url 'profile_page' username=user.username %}"><strong id="username">{{ user.username }}</strongw></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -49,4 +49,5 @@
     </body>
 
     <script src="{% static 'network/network.js' %}"></script>
+    <script src="{% static 'network/like.js' %}"></script>
 </html>

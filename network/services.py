@@ -1,6 +1,6 @@
 """App logic."""
 
-from .models import User, Post
+from .models import User, Post, Like
 
 
 def get_following_posts(user):
@@ -22,3 +22,19 @@ def edit_post(post_id: int, text: str) -> None:
     post: Post = Post.objects.get(pk=post_id)
     post.content = text
     post.save()
+
+
+def create_like(like_author, liked_post):
+    """Create like.
+
+    Args:
+        like_author (string): Username who likes post.
+        liked_post (int): Id of post, which is liked.
+
+    Returns:
+        Like: Return Like model object.
+    """
+    user = User.objects.get(username=like_author)
+    post = Post.objects.get(pk=liked_post)
+
+    return Like.objects.create(like_author=user, liked_post=post)
