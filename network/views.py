@@ -13,7 +13,7 @@ from .models import User, Post
 
 from .forms import NewPostForm
 
-from .services import get_following_posts, edit_post, toggle_like
+from .services import get_following_posts, edit_post, toggle_like, count_likes
 
 
 logging.basicConfig(
@@ -203,13 +203,13 @@ def like_view(request):
 
     if request.method == 'POST':
         body = json.loads(request.body)  # Convert from byte to dict
-        like_author = body['like_author']
-        liked_post = body['liked_post']
+        like_author = body['like_author']  # Author's username
+        liked_post = body['liked_post']  # Post id
 
         toggle_like(like_author, liked_post)
 
         return HttpResponse(json.dumps(
-            {'likes': Post.objects.get(pk=liked_post).likes.all().count()}
+            {'likes': count_likes(liked_post)}
         ))
 
     return redirect('index')

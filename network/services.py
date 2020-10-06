@@ -2,6 +2,7 @@
 
 from django.db.utils import IntegrityError
 from .models import User, Post, Like
+from typing import Optional
 
 
 def get_following_posts(user):
@@ -25,8 +26,21 @@ def edit_post(post_id: int, text: str) -> None:
     post.save()
 
 
-def toggle_like(like_author, liked_post):
-    """Create like.
+def count_likes(post_id: int) -> int:
+    """Return the number of likes for this post.
+
+    Args:
+        post_id (int): post id.
+
+    Returns:
+        int: Number of likes.
+    """
+    post = Post.objects.get(pk=post_id)
+    return post.likes.all().count()
+
+
+def toggle_like(like_author: str, liked_post: int) -> Optional[Like]:
+    """Create like. If post is liked, delete like.
 
     Args:
         like_author (string): Username who likes post.
