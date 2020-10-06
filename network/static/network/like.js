@@ -6,9 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
     likeLinks.forEach(link => {
         link.onclick = (event) => {
             const cardBody = event.target.parentElement;
+            try {
+                const like_author = document.querySelector('#username').innerHTML;
+            } catch (TypeError) {
+                alert("Please log in.");
+                return false;
+            }
 
             const data = {
-                like_author: document.querySelector('#username').innerHTML,
+                like_author: like_author,
                 liked_post: cardBody.dataset.post_id,
             };
 
