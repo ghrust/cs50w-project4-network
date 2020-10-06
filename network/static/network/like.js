@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(data),
             })
                 .then(response => response.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    event.target.innerHTML = data.likes;
+                })
                 .catch(error => console.error(error));
         };
     });

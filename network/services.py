@@ -1,5 +1,6 @@
 """App logic."""
 
+from django.db.utils import IntegrityError
 from .models import User, Post, Like
 
 
@@ -24,7 +25,7 @@ def edit_post(post_id: int, text: str) -> None:
     post.save()
 
 
-def create_like(like_author, liked_post):
+def toggle_like(like_author, liked_post):
     """Create like.
 
     Args:
@@ -37,4 +38,8 @@ def create_like(like_author, liked_post):
     user = User.objects.get(username=like_author)
     post = Post.objects.get(pk=liked_post)
 
-    return Like.objects.create(like_author=user, liked_post=post)
+    try:
+        return Like.objects.create(like_author=user, liked_post=post)
+    except IntegrityError:
+        # If like is exists, unlike.
+        Like.objects.get(like_author=user, liked_post=post).delete()

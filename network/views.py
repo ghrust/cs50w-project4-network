@@ -13,7 +13,7 @@ from .models import User, Post
 
 from .forms import NewPostForm
 
-from .services import get_following_posts, edit_post, create_like
+from .services import get_following_posts, edit_post, toggle_like
 
 
 logging.basicConfig(
@@ -206,8 +206,10 @@ def like_view(request):
         like_author = body['like_author']
         liked_post = body['liked_post']
 
-        like = create_like(like_author, liked_post)
+        toggle_like(like_author, liked_post)
 
-        return HttpResponse(json.dumps({'like': str(like)}))
+        return HttpResponse(json.dumps(
+            {'likes': Post.objects.get(pk=liked_post).likes.all().count()}
+        ))
 
     return redirect('index')
