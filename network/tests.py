@@ -1,4 +1,3 @@
-from django.http import response
 from django.test import TestCase, Client
 from .models import User, Post, UserFollowing
 from .forms import NewPostForm
