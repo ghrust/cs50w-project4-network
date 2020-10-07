@@ -4,7 +4,9 @@
                 <h5 class="card-title"><a href="{% url 'profile_page' username=post.author %}">{{ post.author }}</a></h5>
                 <div class="card-text">{{ post.content }}</div>
                 <h6 class="card-subtitle text-muted">{{ post.date }}</h6>
-                <i class="fas fa-heart text-muted">0</i>
+                <!-- Likes. -->
+                <i class="fas fa-heart text-muted like-link">{{ post.likes.all.count }}</i>
+
                 {% if post.author == user %}
                     <a class="edit-post-link" href="">Edit</a>
                 {% endif %}

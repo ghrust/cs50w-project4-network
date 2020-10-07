@@ -247,3 +247,19 @@ class NetworkTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(post.content, 'test')
+
+    def test_like(self):
+        """Test like view."""
+
+        c = Client()
+        c.login(username='user1', password='pass')
+
+        c.post(
+            '/like',
+            {'like_author': 'user1', 'liked_post': '1'},
+            content_type='application/json',
+        )
+
+        post = Post.objects.get(pk=1)
+
+        self.assertEqual(post.likes.all().count(), 1)
