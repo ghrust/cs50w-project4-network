@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.onclick = (event) => {
             const cardBody = event.target.parentElement;
             try {
-                const like_author = document.querySelector('#username').innerHTML;
+                var like_author = document.querySelector('#username').innerHTML;
             } catch (TypeError) {
                 alert("Please log in.");
                 return false;
